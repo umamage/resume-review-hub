@@ -8,6 +8,12 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    allowedHosts: [
+      "localhost",
+      "127.0.0.1",
+      "*.onrender.com",
+      "resume-review-hub.onrender.com"
+    ],
     hmr: {
       overlay: false,
     },
