@@ -34,7 +34,7 @@ services:
     branch: main
     repo: https://github.com/umamage/resume-review-hub.git
     buildCommand: npm ci --no-audit --no-fund --omit=dev
-    startCommand: npm start
+    startCommand: npm run dev
     autoDeploy: true
     
     envVars:

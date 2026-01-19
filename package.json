@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node server-lite.js",
+    "dev": "node server-lite.js",
     "build": "echo 'No build needed - using static HTML'"
   },
   "dependencies": {
