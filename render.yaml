@@ -33,7 +33,7 @@ services:
     plan: starter
     branch: main
     repo: https://github.com/umamage/resume-review-hub.git
-    buildCommand: npm ci && npm run build
+    buildCommand: NODE_OPTIONS=--max-old-space-size=512 npm ci && NODE_OPTIONS=--max-old-space-size=512 npm run build
     startCommand: npm run start
     autoDeploy: true
     
@@ -42,7 +42,5 @@ services:
         value: https://resume-review-backend.onrender.com/api
       - key: NODE_ENV
         value: production
-      - key: NODE_OPTIONS
-        value: "--max-old-space-size=2048"
     
     healthCheckPath: /
