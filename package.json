@@ -12,7 +12,8 @@
     "start": "node server.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "postinstall": "npx update-browserslist-db@latest --yes"
+    "postinstall": "npm run update-browserslist || true",
+    "update-browserslist": "update-browserslist-db --yes"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

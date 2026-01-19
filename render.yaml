@@ -33,8 +33,8 @@ services:
     plan: starter
     branch: main
     repo: https://github.com/umamage/resume-review-hub.git
-    buildCommand: npm install && npm run build
-    startCommand: npm run preview
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
     autoDeploy: true
     
     envVars:
@@ -42,5 +42,7 @@ services:
         value: https://resume-review-backend.onrender.com/api
       - key: NODE_ENV
         value: production
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=2048"
     
     healthCheckPath: /
