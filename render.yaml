@@ -13,7 +13,7 @@ services:
         generateValue: true
 
   # Spring Boot Backend
-  - type: service
+  - type: web
     name: resume-review-backend
     env: docker
     plan: starter
