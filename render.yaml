@@ -1,12 +1,4 @@
 services:
-  # PostgreSQL Database
-  - type: pserv
-    name: resume-review-db
-    plan: starter
-    envVars:
-      - key: POSTGRES_PASSWORD
-        generateValue: true
-
   # Spring Boot Backend
   - type: web
     name: resume-review-backend
@@ -20,17 +12,11 @@ services:
     
     envVars:
       - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: resume_review_db
-          property: connectionString
+        value: postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
       - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: resume_review_db
-          property: user
+        value: ${POSTGRES_USER}
       - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: resume_review_db
-          property: password
+        value: ${POSTGRES_PASSWORD}
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
