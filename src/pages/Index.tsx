@@ -1,12 +1,46 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import Header from "@/components/Header";
+import ResumeUpload from "@/components/ResumeUpload";
+import ScoreDisplay from "@/components/ScoreDisplay";
+import JobSuggestions from "@/components/JobSuggestions";
 
 const Index = () => {
+  const [activeTab, setActiveTab] = useState("upload");
+  const [hasUploadedResume, setHasUploadedResume] = useState(false);
+  const [resumeScore] = useState(78); // This would come from the Java backend
+
+  const handleUploadComplete = (file: File) => {
+    console.log("Resume uploaded:", file.name);
+    setHasUploadedResume(true);
+    // Here you would send the file to your Java backend
+    // and receive the score back
+    setActiveTab("review");
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen gradient-hero">
+      <Header activeTab={activeTab} onTabChange={setActiveTab} />
+      
+      <main>
+        {activeTab === "upload" && (
+          <ResumeUpload onUploadComplete={handleUploadComplete} />
+        )}
+        
+        {activeTab === "review" && (
+          <ScoreDisplay score={resumeScore} isVisible={true} />
+        )}
+        
+        {activeTab === "jobs" && (
+          <JobSuggestions isVisible={true} />
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-border bg-card py-8 mt-16">
+        <div className="container text-center text-sm text-muted-foreground">
+          <p>© 2024 ResumeAI. Powered by advanced AI analysis.</p>
+        </div>
+      </footer>
     </div>
   );
 };
