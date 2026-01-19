@@ -2,12 +2,8 @@ services:
   # PostgreSQL Database
   - type: pserv
     name: resume-review-db
-    env: docker
     plan: starter
     ipAllowList: []
-    databases:
-      - name: resume_review_db
-        user: postgres
     envVars:
       - key: POSTGRES_PASSWORD
         generateValue: true
@@ -20,7 +16,7 @@ services:
     branch: main
     repo: https://github.com/umamage/resume-review-hub.git
     rootDir: backend
-    dockerfile: Dockerfile
+    dockerfilePath: backend/Dockerfile
     buildCommand: mvn clean package -DskipTests -Dspring.profiles.active=prod
     startCommand: java -jar target/resume-review-backend-1.0.0.jar
     autoDeploy: true
