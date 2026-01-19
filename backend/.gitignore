@@ -1,0 +1,51 @@
+# .gitignore for Spring Boot Backend
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+
+# Maven
+target/
+.m2/
+*.jar
+*.war
+*.ear
+
+# Spring Boot
+spring-boot-devtools.properties
+.gradle
+build/
+
+# Database
+h2/
+*.db
+*.h2.db
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Files
+uploads/
+/tmp/
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.coverage
+htmlcov/
+
+# Node (if using any frontend tooling)
+node_modules/
+npm-debug.log

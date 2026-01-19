@@ -1,0 +1,348 @@
+{
+  "info": {
+    "_postman_id": "resume-review-hub-api",
+    "name": "Resume Review Hub API",
+    "description": "Complete API collection for Resume Review Hub backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Resume Management",
+      "item": [
+        {
+          "name": "Upload Resume",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "description": "PDF resume file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/resumes/upload",
+              "host": ["{{base_url}}"],
+              "path": ["resumes", "upload"]
+            },
+            "description": "Upload a PDF resume file"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Resumes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/resumes",
+              "host": ["{{base_url}}"],
+              "path": ["resumes"]
+            },
+            "description": "Retrieve all uploaded resumes"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Resume by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/resumes/{{resume_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["resumes", "{{resume_id}}"]
+            },
+            "description": "Get a specific resume by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Resume Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/resumes/{{resume_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["resumes", "{{resume_id}}", "status"]
+            },
+            "description": "Get the status of a resume"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Resume Status",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/resumes/{{resume_id}}/status?status=REVIEWED",
+              "host": ["{{base_url}}"],
+              "path": ["resumes", "{{resume_id}}", "status"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "REVIEWED",
+                  "description": "New status (UPLOADED, REVIEWED, SCORED, etc.)"
+                }
+              ]
+            },
+            "description": "Update the status of a resume"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Resume",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/resumes/{{resume_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["resumes", "{{resume_id}}"]
+            },
+            "description": "Delete a resume by ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Review Scores",
+      "item": [
+        {
+          "name": "Generate Review Score",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/review-scores/generate/{{resume_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["review-scores", "generate", "{{resume_id}}"]
+            },
+            "description": "Generate an automated review score for a resume"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Review Score",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/review-scores/resume/{{resume_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["review-scores", "resume", "{{resume_id}}"]
+            },
+            "description": "Retrieve the review score for a specific resume"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Job Suggestions",
+      "item": [
+        {
+          "name": "Generate Job Suggestions",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/job-suggestions/generate/{{resume_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["job-suggestions", "generate", "{{resume_id}}"]
+            },
+            "description": "Generate job suggestions based on resume content"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Job Suggestions for Resume",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/job-suggestions/resume/{{resume_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["job-suggestions", "resume", "{{resume_id}}"]
+            },
+            "description": "Retrieve all job suggestions for a resume"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Job Suggestion",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/job-suggestions/{{job_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["job-suggestions", "{{job_id}}"]
+            },
+            "description": "Get a specific job suggestion by ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Job Applications",
+      "item": [
+        {
+          "name": "Apply for Job",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/job-applications/apply?jobSuggestionId={{job_id}}&resumeId={{resume_id}}&applicationNotes=Very%20interested%20in%20this%20position",
+              "host": ["{{base_url}}"],
+              "path": ["job-applications", "apply"],
+              "query": [
+                {
+                  "key": "jobSuggestionId",
+                  "value": "{{job_id}}",
+                  "description": "ID of the job suggestion"
+                },
+                {
+                  "key": "resumeId",
+                  "value": "{{resume_id}}",
+                  "description": "ID of the resume to use for application"
+                },
+                {
+                  "key": "applicationNotes",
+                  "value": "Very interested in this position",
+                  "description": "Optional notes for the application"
+                }
+              ]
+            },
+            "description": "Submit an application for a job"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Applications for Resume",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/job-applications/resume/{{resume_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["job-applications", "resume", "{{resume_id}}"]
+            },
+            "description": "Get all applications submitted for a specific resume"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Application",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/job-applications/{{application_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["job-applications", "{{application_id}}"]
+            },
+            "description": "Get a specific job application by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Application Status",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/job-applications/{{application_id}}/status?status=INTERVIEW_SCHEDULED",
+              "host": ["{{base_url}}"],
+              "path": ["job-applications", "{{application_id}}", "status"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "INTERVIEW_SCHEDULED",
+                  "description": "New status (APPLIED, INTERVIEW_SCHEDULED, REJECTED, ACCEPTED, etc.)"
+                }
+              ]
+            },
+            "description": "Update the status of a job application"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Application Response",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/job-applications/{{application_id}}/response?responseStatus=ACCEPTED&responseMessage=Congratulations!",
+              "host": ["{{base_url}}"],
+              "path": ["job-applications", "{{application_id}}", "response"],
+              "query": [
+                {
+                  "key": "responseStatus",
+                  "value": "ACCEPTED",
+                  "description": "Response status (ACCEPTED, REJECTED, PENDING, etc.)"
+                },
+                {
+                  "key": "responseMessage",
+                  "value": "Congratulations!",
+                  "description": "Response message from employer"
+                }
+              ]
+            },
+            "description": "Update application with employer response"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Application",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/job-applications/{{application_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["job-applications", "{{application_id}}"]
+            },
+            "description": "Delete a job application"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080/api",
+      "type": "string",
+      "description": "Base URL for the API"
+    },
+    {
+      "key": "resume_id",
+      "value": "1",
+      "type": "string",
+      "description": "Resume ID from upload response"
+    },
+    {
+      "key": "job_id",
+      "value": "1",
+      "type": "string",
+      "description": "Job suggestion ID"
+    },
+    {
+      "key": "application_id",
+      "value": "1",
+      "type": "string",
+      "description": "Job application ID"
+    }
+  ]
+}

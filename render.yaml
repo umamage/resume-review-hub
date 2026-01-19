@@ -1,0 +1,74 @@
+services:
+  # PostgreSQL Database
+  - type: pserv
+    name: resume-review-db
+    env: docker
+    plan: starter
+    ipAllowList: []
+    databases:
+      - name: resume_review_db
+        user: postgres
+    envVars:
+      - key: POSTGRES_PASSWORD
+        generateValue: true
+
+  # Spring Boot Backend
+  - type: service
+    name: resume-review-backend
+    env: docker
+    plan: starter
+    branch: main
+    repo: https://github.com/umamage/resume-review-hub.git
+    rootDir: backend
+    dockerfile: Dockerfile
+    buildCommand: mvn clean package -DskipTests -Dspring.profiles.active=prod
+    startCommand: java -jar target/resume-review-backend-1.0.0.jar
+    autoDeploy: true
+    
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: resume_review_db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: resume_review_db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: resume_review_db
+          property: password
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+      - key: SERVER_PORT
+        value: "8080"
+    
+    healthCheckPath: /api/resumes
+    healthCheckStartupFailureThresholdSeconds: 300
+    
+    depends_on:
+      - name: resume-review-db
+        type: pserv
+
+  # React Frontend
+  - type: web
+    name: resume-review-frontend
+    env: node
+    plan: starter
+    branch: main
+    repo: https://github.com/umamage/resume-review-hub.git
+    buildCommand: npm install && npm run build
+    startCommand: npm run preview
+    autoDeploy: true
+    
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          name: resume-review-backend
+          property: url
+      - key: NODE_ENV
+        value: production
+    
+    healthCheckPath: /
