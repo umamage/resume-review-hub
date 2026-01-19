@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, AlertCircle, TrendingUp, FileText, Briefcase, GraduationCap } from "lucide-react";
@@ -8,27 +9,59 @@ interface ScoreDisplayProps {
 }
 
 const ScoreDisplay = ({ score, isVisible }: ScoreDisplayProps) => {
+  const [displayScore, setDisplayScore] = useState(score);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Load suggestions from localStorage if available
+    const savedSuggestions = localStorage.getItem('lastResumeSuggestions');
+    if (savedSuggestions) {
+      try {
+        setSuggestions(JSON.parse(savedSuggestions));
+      } catch (e) {
+        console.error('Failed to parse suggestions:', e);
+      }
+    }
+
+    // Load score from localStorage if available
+    const savedScore = localStorage.getItem('lastResumeScore');
+    if (savedScore) {
+      try {
+        setDisplayScore(JSON.parse(savedScore));
+      } catch (e) {
+        console.error('Failed to parse score:', e);
+      }
+    }
+  }, []);
+
   const circumference = 2 * Math.PI * 45;
-  const strokeDashoffset = circumference - (score / 100) * circumference;
+  const strokeDashoffset = circumference - (displayScore / 100) * circumference;
 
   const getScoreColor = () => {
-    if (score >= 80) return "text-success";
-    if (score >= 60) return "text-warning";
+    if (displayScore >= 80) return "text-success";
+    if (displayScore >= 60) return "text-warning";
     return "text-destructive";
   };
 
   const getScoreLabel = () => {
-    if (score >= 80) return { text: "Excellent", color: "bg-success" };
-    if (score >= 60) return { text: "Good", color: "bg-warning" };
+    if (displayScore >= 80) return { text: "Excellent", color: "bg-success" };
+    if (displayScore >= 60) return { text: "Good", color: "bg-warning" };
     return { text: "Needs Work", color: "bg-destructive" };
   };
 
-  const improvements = [
-    { icon: CheckCircle, text: "Strong work experience section", positive: true },
-    { icon: CheckCircle, text: "Good keyword optimization", positive: true },
-    { icon: AlertCircle, text: "Add more quantifiable achievements", positive: false },
-    { icon: AlertCircle, text: "Include relevant certifications", positive: false },
-  ];
+  // Build improvements from suggestions
+  const improvements = suggestions.length > 0 
+    ? suggestions.map((suggestion, index) => ({
+        icon: index < 2 ? CheckCircle : AlertCircle,
+        text: suggestion,
+        positive: index < 2,
+      }))
+    : [
+        { icon: CheckCircle, text: "Strong work experience section", positive: true },
+        { icon: CheckCircle, text: "Good keyword optimization", positive: true },
+        { icon: AlertCircle, text: "Add more quantifiable achievements", positive: false },
+        { icon: AlertCircle, text: "Include relevant certifications", positive: false },
+      ];
 
   const categories = [
     { icon: FileText, label: "Format & Layout", score: 85, color: "text-primary" },
@@ -91,7 +124,7 @@ const ScoreDisplay = ({ score, isVisible }: ScoreDisplayProps) => {
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className={`font-display text-5xl font-bold ${getScoreColor()}`}>
-                    {score}
+                    {displayScore}
                   </span>
                   <span className="text-muted-foreground text-sm">out of 100</span>
                 </div>

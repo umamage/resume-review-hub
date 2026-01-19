@@ -1,7 +1,8 @@
 import { useState, useCallback } from "react";
-import { Upload, FileText, CheckCircle, Loader2 } from "lucide-react";
+import { Upload, FileText, CheckCircle, Loader2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { resumeApi } from "@/services/api";
 
 interface ResumeUploadProps {
   onUploadComplete: (file: File) => void;
@@ -11,6 +12,7 @@ const ResumeUpload = ({ onUploadComplete }: ResumeUploadProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -40,11 +42,24 @@ const ResumeUpload = ({ onUploadComplete }: ResumeUploadProps) => {
 
   const processFile = async (file: File) => {
     setIsUploading(true);
-    // Simulate upload delay for demo
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setUploadedFile(file);
-    setIsUploading(false);
-    onUploadComplete(file);
+    setUploadError(null);
+    
+    try {
+      // Call the backend API to upload and analyze the resume
+      const result = await resumeApi.uploadResume(file);
+      
+      // Store the result in localStorage for use in other components
+      localStorage.setItem('lastResumeScore', JSON.stringify(result.score));
+      localStorage.setItem('lastResumeSuggestions', JSON.stringify(result.suggestions));
+      
+      setUploadedFile(file);
+      setIsUploading(false);
+      onUploadComplete(file);
+    } catch (error) {
+      console.error('Failed to upload resume:', error);
+      setUploadError(error instanceof Error ? error.message : 'Failed to upload resume. Please try again.');
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -75,6 +90,15 @@ const ResumeUpload = ({ onUploadComplete }: ResumeUploadProps) => {
           `}
         >
           <div className="p-12 md:p-16 text-center">
+            {uploadError && (
+              <div className="mb-8 p-4 rounded-lg bg-destructive/10 border border-destructive/20 flex items-start gap-3">
+                <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
+                <div className="text-left">
+                  <p className="text-sm font-medium text-destructive">Upload failed</p>
+                  <p className="text-sm text-destructive/80 mt-1">{uploadError}</p>
+                </div>
+              </div>
+            )}
             {isUploading ? (
               <div className="animate-scale-in">
                 <div className="relative inline-flex">

@@ -33,7 +33,7 @@ services:
     plan: starter
     branch: main
     repo: https://github.com/umamage/resume-review-hub.git
-    buildCommand: NODE_OPTIONS=--max-old-space-size=512 npm ci && NODE_OPTIONS=--max-old-space-size=512 npm run build
+    buildCommand: NODE_OPTIONS="--max-old-space-size=512 --max-semi-space-size=1" npm ci --prefer-offline && NODE_OPTIONS="--max-old-space-size=512 --max-semi-space-size=1" npm run build
     startCommand: npm run start
     autoDeploy: true
     
