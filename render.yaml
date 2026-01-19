@@ -46,11 +46,6 @@ services:
         value: "8080"
     
     healthCheckPath: /api/resumes
-    healthCheckStartupFailureThresholdSeconds: 300
-    
-    depends_on:
-      - name: resume-review-db
-        type: pserv
 
   # React Frontend
   - type: web
@@ -65,9 +60,7 @@ services:
     
     envVars:
       - key: VITE_API_BASE_URL
-        fromService:
-          name: resume-review-backend
-          property: url
+        value: https://resume-review-backend.onrender.com/api
       - key: NODE_ENV
         value: production
     
